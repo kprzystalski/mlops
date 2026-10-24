@@ -1,0 +1,16 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN apt-get update
+RUN apt-get -y install git vim
+
+RUN pip install --no-cache-dir notebook ipykernel dvc pandas scikit-learn pyyaml matplotlib
+
+EXPOSE 8888
+
+CMD ["jupyter", "notebook", \
+     "--ip=0.0.0.0", \
+     "--port=8888", \
+     "--no-browser", \
+     "--allow-root"]

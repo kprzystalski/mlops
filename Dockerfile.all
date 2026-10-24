@@ -1,0 +1,26 @@
+FROM ubuntu:26.04
+
+ENV TZ=Warsaw/Europe
+
+RUN apt-get update 
+RUN apt-get -y install vim python3-pip python3 python3-venv
+
+RUN mkdir /app/
+WORKDIR /app/
+RUN python3 -m venv .venv && /app/.venv/bin/python3 -m pip install label-studio transformers[torch] ollama dvc jupyter mlflow[extras,sqlserver,s3] scikit-learn keras
+
+
+RUN useradd -ms /bin/bash student
+RUN adduser student sudo
+
+
+USER student
+WORKDIR /home/student/
+
+VOLUME /home/student/
+
+EXPOSE 8000
+
+COPY . /home/student/
+
+CMD /bin/bash
